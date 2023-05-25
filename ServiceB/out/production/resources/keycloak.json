@@ -1,0 +1,11 @@
+{
+  "realm": "RBS-Demo",
+  "auth-server-url": "http://localhost:8080/auth",
+  "ssl-required": "external",
+  "resource": "ServiceA",
+  "credentials": {
+    "secret": "CSll0szRPzEC9XjEtlF47wTeePnrmbj9"
+  },
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}
