@@ -20,7 +20,7 @@ public class TestController {
 
     @GetMapping("/call")
     public ResponseEntity<String> callOtherService() {
-        String response = callBService.callServiceB();
+        String response = callBService.callServiceB().getBody();
         return ResponseEntity.ok(response);
     }
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/secured")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('READER') or hasAuthority('READER')")
 public class SecuredController {
 
 
