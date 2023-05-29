@@ -1,6 +1,7 @@
 package pl.aml.poc.servicea.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,29 +18,15 @@ public class CallBService {
 
     private final RestTemplate restTemplate;
 
-    private final OAuth2AuthorizedClientManager authorizedClientManager;
-
-
     @Autowired
-    public CallBService(RestTemplateBuilder restTemplate, OAuth2AuthorizedClientManager authorizedClientManager) {
-        this.restTemplate = restTemplate.build();
-        this.authorizedClientManager = authorizedClientManager;
+    public CallBService(@Qualifier("serviceB") RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    public ResponseEntity<String> callServiceB() {
+    public String callServiceB() {
         String url = "http://localhost:8082/serviceB/secured/call";
-        OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId("keycloak")
-                .principal("ServiceA") // This should match client-id
-                .build();
-        OAuth2AuthorizedClient authorizedClient = this.authorizedClientManager.authorize(authorizeRequest);
 
-        String accessToken = authorizedClient.getAccessToken().getTokenValue();
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-        return restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        return restTemplate.getForObject(url, String.class);
     }
 
 }
